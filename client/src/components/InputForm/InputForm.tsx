@@ -28,6 +28,7 @@ export default function InputForm() {
 					border: 'none',
 					fontWeight: 'bold',
 				}}
+				type="submit"
 			>
 				Add
 			</button>

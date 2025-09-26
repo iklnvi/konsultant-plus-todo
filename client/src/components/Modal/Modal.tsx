@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import type {
 	Status,
 	TodoType,
 	UpdateTodoType,
 } from '../../types/TodoType';
+import styles from './style.module.scss';
 
 interface ModalProps {
 	isOpen: boolean;
@@ -27,7 +28,7 @@ export default function Modal({
 		status: todo?.status || ('backlog' as Status),
 	});
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (todo) {
 			setFormData({
 				title: todo.title,
@@ -56,30 +57,9 @@ export default function Modal({
 	if (!isOpen) return null;
 
 	return (
-		<div
-			style={{
-				position: 'fixed',
-				top: 0,
-				left: 0,
-				right: 0,
-				bottom: 0,
-				backgroundColor: 'rgba(0, 0, 0, 0.5)',
-				display: 'flex',
-				alignItems: 'center',
-				justifyContent: 'center',
-				zIndex: 1000,
-			}}
-		>
-			<div
-				style={{
-					backgroundColor: 'var(--card-bg)',
-					padding: 'var(--padding)',
-					borderRadius: 'var(--border-radius)',
-					minWidth: '400px',
-					maxWidth: '90vw',
-				}}
-			>
-				<h3 style={{ margin: '0 0 var(--gap) 0' }}>
+		<div className={styles.overlay}>
+			<div className={styles.modal}>
+				<h3 className={styles.title}>
 					{mode === 'edit'
 						? 'Редактировать задачу'
 						: mode === 'status'
@@ -87,16 +67,11 @@ export default function Modal({
 						: 'Новая задача'}
 				</h3>
 
-				<form onSubmit={handleSubmit}>
+				<form onSubmit={handleSubmit} className={styles.form}>
 					{mode !== 'status' && (
 						<>
-							<div style={{ marginBottom: 'var(--gap)' }}>
-								<label
-									htmlFor="title"
-									style={{ display: 'block', marginBottom: '0.5rem' }}
-								>
-									Заголовок
-								</label>
+							<div className={styles.formGroup}>
+								<p>Title</p>
 								<input
 									id="title"
 									type="text"
@@ -108,24 +83,11 @@ export default function Modal({
 										})
 									}
 									required
-									style={{
-										width: '100%',
-										padding: '0.5rem',
-										borderRadius: '4px',
-										border: '1px solid var(--border-color)',
-										backgroundColor: 'var(--bg)',
-										color: 'var(--text-color)',
-									}}
 								/>
 							</div>
 
-							<div style={{ marginBottom: 'var(--gap)' }}>
-								<label
-									htmlFor="description"
-									style={{ display: 'block', marginBottom: '0.5rem' }}
-								>
-									Описание
-								</label>
+							<div className={styles.formGroup}>
+								<p>description</p>
 								<textarea
 									id="description"
 									value={formData.description}
@@ -135,26 +97,11 @@ export default function Modal({
 											description: e.target.value,
 										})
 									}
-									style={{
-										width: '100%',
-										padding: '0.5rem',
-										borderRadius: '4px',
-										border: '1px solid var(--border-color)',
-										backgroundColor: 'var(--bg)',
-										color: 'var(--text-color)',
-										minHeight: '100px',
-										resize: 'vertical',
-									}}
 								/>
 							</div>
 
-							<div style={{ marginBottom: 'var(--gap)' }}>
-								<label
-									htmlFor="deadline"
-									style={{ display: 'block', marginBottom: '0.5rem' }}
-								>
-									Дедлайн
-								</label>
+							<div className={styles.formGroup}>
+								<p>Deadline</p>
 								<input
 									id="deadline"
 									type="datetime-local"
@@ -165,26 +112,13 @@ export default function Modal({
 											deadline: e.target.value,
 										})
 									}
-									style={{
-										width: '100%',
-										padding: '0.5rem',
-										borderRadius: '4px',
-										border: '1px solid var(--border-color)',
-										backgroundColor: 'var(--bg)',
-										color: 'var(--text-color)',
-									}}
 								/>
 							</div>
 						</>
 					)}
 
-					<div style={{ marginBottom: 'var(--gap)' }}>
-						<label
-							htmlFor="status"
-							style={{ display: 'block', marginBottom: '0.5rem' }}
-						>
-							Статус
-						</label>
+					<div className={styles.formGroup}>
+						<p>Status</p>
 						<select
 							id="status"
 							value={formData.status}
@@ -194,14 +128,6 @@ export default function Modal({
 									status: e.target.value as Status,
 								})
 							}
-							style={{
-								width: '100%',
-								padding: '0.5rem',
-								borderRadius: '4px',
-								border: '1px solid var(--border-color)',
-								backgroundColor: 'var(--bg)',
-								color: 'var(--text-color)',
-							}}
 						>
 							<option value="backlog">Бэклог</option>
 							<option value="inProgress">В работе</option>
@@ -209,38 +135,15 @@ export default function Modal({
 						</select>
 					</div>
 
-					<div
-						style={{
-							display: 'flex',
-							gap: 'var(--gap)',
-							justifyContent: 'flex-end',
-						}}
-					>
+					<div className={styles.actions}>
 						<button
 							type="button"
 							onClick={onClose}
-							style={{
-								padding: '0.5rem 1rem',
-								border: '1px solid var(--border-color)',
-								borderRadius: '4px',
-								backgroundColor: 'transparent',
-								color: 'var(--text-color)',
-								cursor: 'pointer',
-							}}
+							className={styles.cancel}
 						>
 							Отмена
 						</button>
-						<button
-							type="submit"
-							style={{
-								padding: '0.5rem 1rem',
-								border: 'none',
-								borderRadius: '4px',
-								backgroundColor: 'var(--accent-primary)',
-								color: 'white',
-								cursor: 'pointer',
-							}}
-						>
+						<button type="submit" className={styles.save}>
 							Сохранить
 						</button>
 					</div>
