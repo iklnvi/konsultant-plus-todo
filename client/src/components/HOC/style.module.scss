@@ -1,0 +1,102 @@
+.loader_container {
+	position: relative;
+}
+
+.loader_overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(255, 255, 255, 0.9);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
+}
+
+.loader_standalone {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 2rem;
+}
+
+.loader_content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+}
+
+.loader_text {
+	color: #666;
+	font-size: 0.9rem;
+}
+
+/* Spinner animation */
+.spinner_loader {
+	border: 4px solid #f3f3f3;
+	border-top: 4px solid;
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+/* Dots animation */
+.dots_loader {
+	display: flex;
+	gap: 4px;
+}
+
+.dots_loader div {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: currentColor;
+	animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.dots_loader div:nth-child(1) {
+	animation-delay: -0.32s;
+}
+.dots_loader div:nth-child(2) {
+	animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+	0%,
+	80%,
+	100% {
+		transform: scale(0);
+	}
+	40% {
+		transform: scale(1);
+	}
+}
+
+/* Pulse animation */
+.pulse_loader {
+	border-radius: 50%;
+	animation: pulse 1.5s ease-in-out infinite both;
+}
+
+@keyframes pulse {
+	0%,
+	100% {
+		transform: scale(0.8);
+		opacity: 0.5;
+	}
+	50% {
+		transform: scale(1.2);
+		opacity: 1;
+	}
+}
