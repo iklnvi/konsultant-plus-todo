@@ -177,13 +177,13 @@ export const todoSlice = createSlice({
 			})
 			.addCase(updateTodoThunk.fulfilled, (state, action) => {
 				state.loading = false;
+				// сервер вернул актуальные данные — подменим ими
 				const index = state.data.findIndex(
 					(todo) => todo.id === action.payload.id,
 				);
 				if (index !== -1) {
 					state.data[index] = action.payload;
 				}
-				// Обновляем chosenTodo если он редактируется
 				if (
 					state.chosenTodo &&
 					state.chosenTodo.id === action.payload.id

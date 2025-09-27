@@ -1,37 +1,52 @@
+import { useState } from 'react';
+import { useAppDispatch } from '../../redux/hooks/hooks';
+import { createTodoThunk } from '../../redux/slices/todo/todoThunk';
+import classes from './style.module.scss';
+
 export default function InputForm() {
+	const [value, setValue] = useState('');
+	const dispatch = useAppDispatch();
+
+	const handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+
+		if (!value.trim()) return;
+
+		const tomorrow = new Date();
+		tomorrow.setDate(tomorrow.getDate() + 1);
+
+		dispatch(
+			createTodoThunk({
+				title: value,
+				description: '',
+				deadline: tomorrow.toISOString(),
+				status: 'backlog',
+			}),
+		);
+
+		setValue('');
+	};
+
 	return (
-		<div
-			style={{
-				display: 'flex',
-				gap: 'var(--gap)',
-				width: '40vw',
-				justifyContent: 'center',
-				alignItems: 'center',
-			}}
+		<form
+			onSubmit={handleSubmit}
+			
+			className={classes.wrapper}
 		>
 			<input
+				value={value}
+				onChange={(e) => setValue(e.target.value)}
 				placeholder="Complete test task"
-				style={{
-					padding: 'var(--padding)',
-					borderRadius: 'var(--border-radius)',
-					border: '1px solid var(--orange-300)',
-					width: '100%',
-					color: 'var(--main-text-color)',
-				}}
+				
+				className={classes.input}
 			/>
 			<button
-				style={{
-					padding: 'var(--padding)',
-					backgroundColor: 'var(--orange-300)',
-					color: 'var(--main-text-color)',
-					borderRadius: 'var(--border-radius)',
-					border: 'none',
-					fontWeight: 'bold',
-				}}
+				
+				className={classes.button}
 				type="submit"
 			>
 				Add
 			</button>
-		</div>
+		</form>
 	);
 }

@@ -1,0 +1,25 @@
+.wrapper {
+	display: flex;
+	gap: var(--gap);
+	width: 40vw;
+	justify-content: center;
+	align-items: center;
+}
+
+.input {
+	padding: var(--padding);
+	border-radius: var(--border-radius);
+	border: 1px solid var(--border-color);
+	width: 100%;
+	color: var(--main-text-color);
+	background-color: var(--inptu-bg);
+}
+
+.button {
+	padding: var(--padding);
+	background-color: var(--add-button);
+	color: var(--main-text-color);
+	border-radius: var(--border-radius);
+	border: none;
+	font-weight: 'bold';
+}

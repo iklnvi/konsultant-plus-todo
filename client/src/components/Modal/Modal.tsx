@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import type {
 	Status,
 	TodoType,
@@ -11,7 +11,11 @@ interface ModalProps {
 	onClose: () => void;
 	todo?: TodoType;
 	mode: 'edit' | 'status' | 'create';
-	onSave: (data: UpdateTodoType | { status: Status }) => void;
+	onSave: (
+		data:
+			| { id?: number; updates?: Partial<UpdateTodoType> }
+			| { status: Status },
+	) => void;
 }
 
 export default function Modal({
@@ -21,7 +25,7 @@ export default function Modal({
 	mode,
 	onSave,
 }: ModalProps) {
-	const [formData, setFormData] = React.useState({
+	const [formData, setFormData] = useState({
 		title: todo?.title || '',
 		description: todo?.description || '',
 		deadline: todo?.deadline || '',
@@ -43,12 +47,35 @@ export default function Modal({
 		e.preventDefault();
 
 		if (mode === 'status') {
+			// отправляем только статус
 			onSave({ status: formData.status });
 		} else {
-			onSave({
-				id: todo?.id || 0,
-				...formData,
-			});
+			if (!todo) {
+				// создание новой задачи
+				onSave({
+					id: 0,
+					updates: {
+						title: formData.title,
+						description: formData.description,
+						deadline: formData.deadline,
+						status: formData.status,
+					},
+				});
+			} else {
+				// редактирование существующей задачи — отправляем только изменённые поля
+				const updates: Partial<UpdateTodoType> = {};
+
+				if (formData.title !== todo.title)
+					updates.title = formData.title;
+				if (formData.description !== todo.description)
+					updates.description = formData.description;
+				if (formData.deadline !== todo.deadline)
+					updates.deadline = formData.deadline;
+				if (formData.status !== todo.status)
+					updates.status = formData.status;
+
+				onSave({ id: todo.id, updates });
+			}
 		}
 
 		onClose();
@@ -71,10 +98,13 @@ export default function Modal({
 					{mode !== 'status' && (
 						<>
 							<div className={styles.formGroup}>
-								<p>Title</p>
+								<p style={{ color: 'var(--main-text-color)' }}>
+									Title
+								</p>
 								<input
 									id="title"
 									type="text"
+									name="title"
 									value={formData.title}
 									onChange={(e) =>
 										setFormData({
@@ -87,10 +117,13 @@ export default function Modal({
 							</div>
 
 							<div className={styles.formGroup}>
-								<p>description</p>
+								<p style={{ color: 'var(--main-text-color)' }}>
+									Description
+								</p>
 								<textarea
 									id="description"
 									value={formData.description}
+									name="description"
 									onChange={(e) =>
 										setFormData({
 											...formData,
@@ -101,10 +134,13 @@ export default function Modal({
 							</div>
 
 							<div className={styles.formGroup}>
-								<p>Deadline</p>
+								<p style={{ color: 'var(--main-text-color)' }}>
+									Deadline
+								</p>
 								<input
 									id="deadline"
 									type="datetime-local"
+									name="deadline"
 									value={formData.deadline}
 									onChange={(e) =>
 										setFormData({
@@ -118,9 +154,10 @@ export default function Modal({
 					)}
 
 					<div className={styles.formGroup}>
-						<p>Status</p>
+						<p style={{ color: 'var(--main-text-color)' }}>Status</p>
 						<select
 							id="status"
+							name="status"
 							value={formData.status}
 							onChange={(e) =>
 								setFormData({

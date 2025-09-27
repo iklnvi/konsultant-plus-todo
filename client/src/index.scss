@@ -10,6 +10,8 @@
 	--main-text-color: #333;
 	--dimmed: #ddd;
 
+	--inptu-bg: #fff;
+
 	--orange-50: #fff7ed;
 	--orange-100: #ffedd5;
 	--orange-200: #fed7aa;
@@ -25,6 +27,10 @@
 	--bg: var(--orange-50);
 
 	--card-bg: var(--orange-100);
+
+	--border-color: var(--orange-300);
+
+	--add-button: var(--orange-300);
 }
 
 :root[data-theme='light'] {
@@ -39,6 +45,16 @@
 
 	--border-color: var(--orange-200);
 	--shadow: rgba(0, 0, 0, 0.1);
+
+	--main-text-color: #fff;
+
+	--card-bg: var(--orange-900);
+
+	--inptu-bg: var(--orange-900);
+	
+	--border-color: var(--orange-700);
+
+	--add-button: var(--orange-500);
 }
 
 body {

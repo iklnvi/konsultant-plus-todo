@@ -1,0 +1,27 @@
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap);
+	padding: var(--padding);
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+}
+
+.title {
+	color: var(--main-text-color);
+	margin: 0;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap);
+	width: 40vw;
+}
+
+.no_data {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}

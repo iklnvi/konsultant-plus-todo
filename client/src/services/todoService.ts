@@ -44,7 +44,7 @@ class TodoService {
 		updates: UpdateTodoType,
 	): Promise<TodoType> {
 		try {
-			const response = await this.client.put(
+			const response = await this.client.patch(
 				`/getTodo/${id}`,
 				updates,
 			);

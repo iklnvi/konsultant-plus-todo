@@ -1,0 +1,24 @@
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap);
+	padding: var(--padding);
+	border-radius: var(--border-radius);
+	background-color: var(--card-bg);
+	position: relative;
+	cursor: pointer;
+}
+
+.card_header {
+	display: flex;
+	width: 100%;
+	justify-content: space-between;
+	align-items: center;
+	color: var(--main-text-color);
+
+    &_actions {
+        display: flex;
+        gap: var(--gap);
+        align-items: center;
+    }
+}

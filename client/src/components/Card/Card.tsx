@@ -19,6 +19,8 @@ import {
 	updateTodoThunk,
 	changeTodoStatusThunk,
 } from '../../redux/slices/todo/todoThunk';
+import classes from './style.module.scss';
+import { getOverdueText } from '../../lib/getOverdueText';
 
 type PropsType = {
 	data: TodoType;
@@ -107,35 +109,12 @@ export default function Card({ data }: PropsType) {
 	return (
 		<>
 			<div
-				style={{
-					display: 'flex',
-					flexDirection: 'column',
-					gap: 'var(--gap)',
-					padding: 'var(--padding)',
-					borderRadius: 'var(--border-radius)',
-					backgroundColor: 'var(--card-bg)',
-					position: 'relative',
-					cursor: 'pointer',
-				}}
+				className={classes.wrapper}
 				onClick={() => setModal({ isOpen: true, mode: 'edit' })}
 			>
-				<div
-					style={{
-						display: 'flex',
-						width: '100%',
-						justifyContent: 'space-between',
-						alignItems: 'center',
-						color: 'var(--main-text-color)',
-					}}
-				>
+				<div className={classes.card_header}>
 					<h3 style={{ margin: 0 }}>{data.title}</h3>
-					<div
-						style={{
-							display: 'flex',
-							gap: 'var(--gap)',
-							alignItems: 'center',
-						}}
-					>
+					<div className={classes.card_header_actions}>
 						{icon(data.status)}
 						<IconDots
 							color="var(--orange-300)"
@@ -144,9 +123,28 @@ export default function Card({ data }: PropsType) {
 						/>
 					</div>
 				</div>
-				<p style={{ margin: 0 }}>{data.description}</p>
-				<p style={{ margin: 0 }}>
-					Закончить до: {new Date(data.deadline).toLocaleDateString()}
+				<p style={{ margin: 0, color: 'var(--main-text-color)' }}>
+					{data.description}
+				</p>
+				<p style={{ margin: 0, color: 'var(--main-text-color)' }}>
+					<span
+						style={{
+							textDecoration:
+								new Date(data.deadline) < new Date()
+									? 'line-through'
+									: 'none',
+						}}
+					>
+						Закончить до:{' '}
+						{new Date(data.deadline).toLocaleDateString()}
+					</span>{' '}
+					{new Date(data.deadline) < new Date() && (
+						<span
+							style={{ color: 'lightcoral', marginLeft: '0.5rem' }}
+						>
+							(Просрочено {getOverdueText(data.deadline)})
+						</span>
+					)}
 				</p>
 			</div>
 

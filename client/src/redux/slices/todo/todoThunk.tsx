@@ -4,6 +4,7 @@ import type {
 	CreateTodoType,
 	UpdateTodoType,
 } from '../../../types/TodoType';
+import { moveTodoToStatus, updateTodo } from './todoSlice';
 
 // GET все задачи
 export const getTodosThunk = createAsyncThunk(
@@ -26,8 +27,22 @@ export const createTodoThunk = createAsyncThunk(
 // PUT обновление задачи
 export const updateTodoThunk = createAsyncThunk(
 	'todos/updateTodoThunk',
-	async ({ id, updates }: { id: number; updates: UpdateTodoType }) =>
-		todoService.updateTodo(id, updates),
+	async (
+		{ id, updates }: { id: number; updates: UpdateTodoType },
+		{ dispatch, rejectWithValue },
+	) => {
+		try {
+			// ⚡️ оптимистическое обновление
+			dispatch(updateTodo({ id, updates }));
+
+			const response = await todoService.updateTodo(id, updates);
+			return response;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response?.data || 'Failed to update todo',
+			);
+		}
+	},
 );
 
 // DELETE удаление задачи
@@ -52,11 +67,23 @@ export const getOverdueTodosThunk = createAsyncThunk(
 // PATCH изменение статуса задачи
 export const changeTodoStatusThunk = createAsyncThunk(
 	'todos/changeTodoStatusThunk',
-	async ({
-		id,
-		status,
-	}: {
-		id: number;
-		status: 'backlog' | 'inProgress' | 'done';
-	}) => todoService.changeTodoStatus(id, status),
+	async (
+		{
+			id,
+			status,
+		}: { id: number; status: 'backlog' | 'inProgress' | 'done' },
+		{ dispatch, rejectWithValue },
+	) => {
+		try {
+			// ⚡️ оптимистическое обновление
+			dispatch(moveTodoToStatus({ id, status }));
+
+			const response = await todoService.changeTodoStatus(id, status);
+			return response;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response?.data || 'Failed to change status',
+			);
+		}
+	},
 );

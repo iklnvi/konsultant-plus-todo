@@ -47,16 +47,12 @@ todoRouter
 	.patch('/:id', async (req, res) => {
 		try {
 			const { id } = req.params;
-			const { title, description, status, deadline } = req.body;
+			const { updates } = req.body;
 			const todo = await Todo.findByPk(id);
 			if (!todo) {
 				return res.status(404).json({ error: 'Todo not found' });
 			}
-			todo.title = title;
-			todo.description = description;
-			todo.status = status;
-			todo.deadline = deadline;
-			await todo.save();
+			await todo.update(updates);
 			res.status(200).json(todo);
 		} catch (error) {
 			console.error(error);
